@@ -1,0 +1,7 @@
+kakei superuser
+    username admin
+    mailadress admin@example.com
+    pass admin
+
+adminpage
+    http://127.0.0.1:8000/admin/
