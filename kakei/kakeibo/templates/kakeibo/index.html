@@ -1,0 +1,8 @@
+{% if latest_expense_list %}
+    <ul>
+        {% for expense in latest_expense_list %}<li><a href="/kakeibo/{{expense_id}}/">{{expense.expense_detail}}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No kakeibo are avaliavle.</p>
+{% endif %}
