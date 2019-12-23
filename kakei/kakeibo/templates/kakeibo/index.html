@@ -1,8 +1,47 @@
-{% if latest_expense_list %}
-    <ul>
-        {% for expense in latest_expense_list %}<li><a href="/kakeibo/{{expense_id}}/">{{expense.expense_detail}}</a></li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No kakeibo are avaliavle.</p>
-{% endif %}
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>家計簿</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'kakeibo/stylesheet.css' %}">
+    </head>
+
+    <body>
+        <div class="header">
+            <div class="header-logo">家計簿</div>
+            <div class="header-list">
+                <ul>
+                    <li></li>
+                    <li>B</li>
+                    <li>C</li>
+                    <li>D</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="main">
+            <div class="contents">
+                <li>
+                {{ month }}月
+                </li>
+                <!-- kakeibo/view.pyで作成したindex関数より受け取ったlatest_expense_listを表示-->
+                {% if latest_expense_list %}
+                    <ul>
+                        {% for expense in latest_expense_list %}
+                        <!-- href=以下はkakeibo/urls.pyで指定したname変数を指定することができる-->
+                        <li><a href="{% url 'detail' expense.id %}">{{expense.expense}}円:{{expense.expense_date}}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No kakeibo are avaliavle.</p>
+                {% endif %}
+            </div>
+            <div class="footer">
+                <p>適当にフッター</p>
+            </div>
+        </div>
+    </body>
+
+
+</html>

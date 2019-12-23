@@ -1,0 +1,31 @@
+{% load static %}
+<html>
+    <head>
+        <meta charset = "utf-8">
+        <title>個別詳細</title>
+        <link rel="stylesheet" type = "text/css" href = "{% static 'kakeibo/detail.css' %}"> 
+    </head>
+    
+    <body>
+        <div class = "detail">
+            <ul>
+                <li>
+                    {{ expense.id }}
+                </li>
+                <li>
+                    {{ expense.expense_user }}
+                </li>
+                <li>
+                    {{ expense.expense }}
+                </li>
+                <li>
+                    {{ expense.expense_detail }}
+                </li>
+                <li>
+                    {{ expense.expense_date }}
+                </li>
+            </ul>
+        </div>
+    </body>
+
+</html>
