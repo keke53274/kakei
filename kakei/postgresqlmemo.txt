@@ -1,0 +1,6 @@
+\d \dt                     現在DBのテーブルをすべて表示
+\d テーブル名           対象のテーブルの型と制約を表示
+文字型で条件指定        「''」シングルで囲う
+複数条件                and、orを使う
+日付型で条件指定        「''」シングルで囲う
+日付例文                 select * from kakeibo_expense where expense_date between '2019-01-01' and '2019-12-31';

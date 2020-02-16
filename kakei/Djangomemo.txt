@@ -1,0 +1,74 @@
+MVTモデル
+M ⇒ model、クラス定義など
+V ⇒ view、URLリクエストの振り分け
+T ⇒ template、画面表示
+
+/home/usr1/.pyenv/versions/3.8.0/bin ←vesioons配下にインストールしpythonたちが入る
+/home/usr1/.pyenv/shims/ ← 
+
+httpの場所とか-------------------------------------------------------------------------------------
+httpd.conf /etc/httpd/conf
+logfile    /var/log/httpd
+
+apxs(APache eXtenSion tool)----------------------------------------------------------------------
+Apacheの拡張モジュールをビルドしてインストールするためのツール
+自分のPCでの場所
+/usr/bin/apxs
+/bin/apxs /上にあるbinはエイアリス
+
+公開案------------------------------------------------------------------------------------------
+DDNS使用？→DDNSだったら自分のIPで可能っぽそう
+            DDNSサイト
+            ・ieServer
+            ・mydns
+            ・No-IP
+            ただ固定じゃないから別途ツールが必要
+            ・dice
+
+            全体的な紹介サイト https://viral-community.com/other-it/ddns-praise-service-2065/
+
+セキュリティ→そもそも全部一戸にまとめてるからセキュリティもくそも無さそう
+              取り敢えずDMZを構築したらましになりそう？
+               →DDNSとどっちさきにする
+
+pip install mod_wsgiでインストーる-------------------------------------------------------------------------------------------------------------------------
+指定されたpythonのpipコマンドを使えたようなので上手く連携ができた
+[usr1@ ~ bash:#]$mod_wsgi-express module-config
+LoadModule wsgi_module /home/usr1/.pyenv/versions/3.8.0/lib/python3.8/site-packages/mod_wsgi/server/mod_wsgi-py38.cpython-38-x86_64-linux-gnu.so
+WSGIPythonHome /home/usr1/.pyenv/versions/3.8.0
+
+httpd.confの加筆部分--------------------------------------------------------------------------------------------------------------------------------------------
+LoadModule wsgi_module /home/usr1/.pyenv/versions/3.8.0/lib/python3.8/site-packages/mod_wsgi/server/mod_wsgi-py38.cpython-38-x86_64-linux-gnu.so
+
+WSGIPythonHome /home/usr1/.pyenv/versions/3.8.0
+WSGIScriptAlias / /home/usr1/kakei/kakei/wsgi.py
+WSGIPythonPath /home/usr1/kakei:/home/usr1/.pyenv
+
+<Directory /home/usr1/kakei/kakei>
+
+  <Files wsgi.py>
+
+    Require all granted
+
+  </Files>
+
+</Directory>
+
+
+staticファイルの設定----------------------------------------------------------------------
+「collectstatic」でkakeiﾃﾞｨﾚｸﾄﾘ内の全てのstaticﾌｧｲﾙﾃﾞｨﾚｸﾄﾘを指定の場所に集約
+指定ﾃﾞｨﾚｸﾄﾘはsettings.pyの「STATIC_ROOT」で指定
+[usr1@ ~/kakei bash:#]$python manage.py collectstatic  
+
+122 static files copied to '/home/usr1/kakei/static'.
+
+httpd.confの加筆部分----------------------------------------------------------------------
+Aliasに指定ﾃﾞｨﾚｸﾄﾘ記述してどうにかこうにか
+このAliasがsettings.pyの「STATIC_URL」で拾われてると思う
+Alias /static/ /home/usr1/kakei/static/
+
+<Directory /home/usr1/kakei/static>
+
+  Require all granted
+
+</Directory>

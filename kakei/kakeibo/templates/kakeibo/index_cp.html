@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>家計簿</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'kakeibo/stylesheet.css' %}">
+        
+    </head>
+
+    <body>
+        <div class="header">
+            <div class="header-logo">家計簿</div>
+            <div class="header-list">
+                <ul>
+                    <li></li>
+                    <li>B</li>
+                    <li>C</li>
+                    <li>D</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="main">
+                <div class="calendar">
+                        <script type="text/javascript">
+                            //日付と時間の設定
+                            now = new Date();
+                            year = now.getFullYear();
+                            mon = now.getMonth()+1;
+                            day = now.getDate();
+                            you = now.getDay();
+                            
+                            //曜日の選択肢
+                            youbi = new Array("日","月","火","水","木","金","土");
+                            youbi_color = new Array("ff0000","","","","","","0000ff");
+                            
+                            //表示の設定
+                            today = year + "年" + mon + "月" + day + "日" + "(<font color='" + youbi_color[you] + "'>" + youbi[you] + "</font>)";
+                            
+                            //画面に表示
+                            //document.write(today);
+                            //document.write("<hr>");
+                            
+                            view_cal(year,mon);
+                            
+                            function view_cal(cy,cm) {
+                                //1日
+                                fday = new Date(cy+"/"+cm+"/1");
+                                fyou = fday.getDay();
+                                //末日
+                                lday = new Array(31,28,31,30,31,30,31,31,30,31,30,31); 
+                                if ((cy%4 == 0 && cy%100 != 0) || (cy%400 == 0)) {lday[1]++;}
+                                //カレンダー表示
+                                document.write("<table border='2'>");
+                                document.write("<tr><th colspan='7'>"+cy+"年"+cm+"月</th></tr>");
+                                document.write("<tr>");
+                                for (m = 0; m < 7; m++){
+                                    document.write("<th><font color='" + youbi_color[m] + "'>" + youbi[m] + "</font></th>");
+                                }
+                                document.write("</tr>");
+                                for (n = 0; n < 6; n++) {
+                                    document.write("<tr>");
+                                    for (m = 0; m < 7; m++){ 				
+                                        d = (n*7+m+1-fyou);
+                                        if (day == d) {document.write("<td align='right' bgcolor='#ffaaaa'>");}
+                                        else {document.write("<td align='right'>");}
+                                        if (d > 0 && d <= lday[cm-1]) {document.write("<font color='" + youbi_color[m] + "'>" + d + "</font>");}
+                                        else {document.write("&nbsp;");}
+                                        document.write("</td>");
+                                    }
+                                    document.write("</tr>");
+                                    if (d >= lday[cm-1]) break;
+                                }
+                                document.write("</table>");
+                            }
+                            </script>
+                 </div>
+            <div class="contents">
+                <li>
+                {{ month }}月
+                </li>
+                <!-- kakeibo/view.pyで作成したindex関数より受け取ったlatest_expense_listを表示-->
+                {% if latest_expense_list %}
+                    <ul>
+                        {% for expense in latest_expense_list %}
+                        <!-- href=以下はkakeibo/urls.pyで指定したname変数を指定することができる-->
+                        <li><a href="{% url 'detail' expense.id %}">{{expense.expense}}円:{{expense.expense_date}}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No kakeibo are avaliavle.</p>
+                {% endif %}
+            </div>
+            <div class="footer">
+                <p>適当にフッター</p>
+            </div>
+        </div>
+    </body>
+
+
+</html>

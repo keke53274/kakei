@@ -1,0 +1,7 @@
+型確認         type(対象の値)
+日付関数       import datetime
+               datetime.datetime()で「yyyy-mm-dd 00-00:00」
+               datetime.date()で「yyyy-mm-dd」
+               import calendar
+               calender.monthrange(year, month)で「(曜日の値、 月末)」
+               calender.monthrange(year, month)[1]で「(月末)」

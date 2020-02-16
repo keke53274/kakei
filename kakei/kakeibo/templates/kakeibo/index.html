@@ -1,10 +1,11 @@
-<!DOCTYPE html>
 {% load static %}
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
         <title>家計簿</title>
         <link rel="stylesheet" type="text/css" href="{% static 'kakeibo/stylesheet.css' %}">
+        
     </head>
 
     <body>
@@ -19,12 +20,23 @@
                 </ul>
             </div>
         </div>
-
-        <div class="main">
+        
             <div class="contents">
-                <li>
-                {{ month }}月
-                </li>
+                <!--httpdで起動してchoromeで開けば欲しい奴がでる-->
+                <!--今はdateで-->
+                <p>
+                    <form action="" method="get">
+                        {% csrf_token %}
+                        <p>
+                        <input type="month" name="selecter" value="----年--月" required/>
+                        <input type="submit" value="表示">
+                        </p>
+                    </form>
+                </p>
+                <p>{{day_list.year}}年{{ day_list.month }}月</p>
+                <p>{{full}}円</p>
+               
+
                 <!-- kakeibo/view.pyで作成したindex関数より受け取ったlatest_expense_listを表示-->
                 {% if latest_expense_list %}
                     <ul>
@@ -36,6 +48,10 @@
                 {% else %}
                     <p>No kakeibo are avaliavle.</p>
                 {% endif %}
+
+                <form action="{% url  'create' %}">
+                    <input id = 'new' type="submit" value="新規"/>
+                   </form>
             </div>
             <div class="footer">
                 <p>適当にフッター</p>
